@@ -17,6 +17,7 @@ class GamesScreen extends ConsumerStatefulWidget {
 
 class _GamesScreenState extends ConsumerState<GamesScreen> {
   late TextEditingController searchController;
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -39,66 +40,136 @@ class _GamesScreenState extends ConsumerState<GamesScreen> {
         : ref.watch(gamesSearchProvider(query));
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('QGames Store'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {
-              ref.read(gamesViewModelProvider.notifier).refresh();
-            },
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF0F172A), // deep navy
+              Color(0xFF020617), // near black
+              Color(0xFF1E293B),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const CheckoutScreen()),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: TextField(
-              controller: searchController,
-              onSubmitted: (value) => ref
-                  .read(gamesViewModelProvider.notifier)
-                  .runSearch(ref, value),
-              decoration: InputDecoration(
-                hintText: 'Search games...',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 32),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF020617),
+                    Color(0xFF0B1323),
+                    Color(0xFF0F172A),
+
+                    /// deep navy
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                 ),
               ),
-            ),
-          ),
-
-          Expanded(
-            child: gamesAsync.when(
-              data: (res) => GridView.builder(
-                padding: const EdgeInsets.all(16),
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 250,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 250 / 400,
+              child: NavigationRail(
+                minWidth: 250,
+                backgroundColor: Colors.transparent,
+                indicatorColor: Colors.lightGreen.shade400.withValues(
+                  alpha: 0.8,
                 ),
-                itemCount: res.results.length,
-                itemBuilder: (context, index) {
-                  final game = res.results[index];
-                  return GameCard(game: game);
+                destinations: const [
+                  NavigationRailDestination(
+                    icon: Icon(Icons.gamepad, color: Colors.white70),
+                    label: Text('Games', style: TextStyle(color: Colors.white)),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(
+                      Icons.shopping_cart_rounded,
+                      color: Colors.white70,
+                    ),
+                    label: Text('Cart', style: TextStyle(color: Colors.white)),
+                  ),
+                ],
+                labelType: NavigationRailLabelType.selected,
+                selectedIndex: _selectedIndex,
+                onDestinationSelected: (int index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                  if (index == 0) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const GamesScreen(),
+                      ),
+                    );
+                  }
+                  if (index == 1) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CheckoutScreen(),
+                      ),
+                    );
+                  }
                 },
               ),
-              error: (error, stack) => Center(child: Text('Error: $error')),
-              loading: () => const Center(child: CircularProgressIndicator()),
             ),
-          ),
-        ],
+
+            Expanded(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: TextField(
+                      controller: searchController,
+                      onSubmitted: (value) => ref
+                          .read(gamesViewModelProvider.notifier)
+                          .runSearch(ref, value),
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        hintText: 'Search games...',
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          color: Colors.white,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        hintStyle: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.7),
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey.shade700.withValues(alpha: 0.4),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: gamesAsync.when(
+                      data: (res) => GridView.builder(
+                        padding: const EdgeInsets.all(16),
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 250,
+                              mainAxisSpacing: 16,
+                              crossAxisSpacing: 16,
+                              childAspectRatio: 250 / 400,
+                            ),
+                        itemCount: res.results.length,
+                        itemBuilder: (context, index) {
+                          final game = res.results[index];
+                          return GameCard(game: game);
+                        },
+                      ),
+                      error: (error, stack) =>
+                          Center(child: Text('Error: $error')),
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator()),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

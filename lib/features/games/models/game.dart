@@ -22,6 +22,12 @@ class Game {
   final String? updated;
   final EsrbRating? esrbRating;
   final List<GamePlatform> platforms;
+  final String? descriptionRaw;
+  final String? dominantColor;
+  final String? saturatedColor;
+  final List<Developer> developers;
+  final List<Publisher> publishers;
+  final List<Genre> genres;
 
   const Game({
     this.id,
@@ -43,6 +49,12 @@ class Game {
     this.updated,
     this.esrbRating,
     this.platforms = const [],
+    this.descriptionRaw,
+    this.dominantColor,
+    this.saturatedColor,
+    this.developers = const [],
+    this.publishers = const [],
+    this.genres = const [],
   });
 
   Map<String, dynamic> toJson() => {
@@ -65,6 +77,12 @@ class Game {
     'updated': updated,
     'esrb_rating': esrbRating?.toJson(),
     'platforms': platforms.map((p) => p.toJson()).toList(),
+    'description_raw': descriptionRaw,
+    'dominant_color': dominantColor,
+    'saturated_color': saturatedColor,
+    'developers': developers.map((d) => d.toJson()).toList(),
+    'publishers': publishers.map((p) => p.toJson()).toList(),
+    'genres': genres.map((g) => g.toJson()).toList(),
   };
 
   /// Converts RAWG JSON into a strongly-typed `Game`.
@@ -102,6 +120,30 @@ class Game {
                 (platform) =>
                     GamePlatform.fromJson(platform as Map<String, dynamic>),
               )
+              .toList() ??
+          [],
+      descriptionRaw: json['description_raw'],
+      dominantColor: json['dominant_color'],
+      saturatedColor: json['saturated_color'],
+      developers:
+          (json['developers'] as List<dynamic>?)
+              ?.map(
+                (developer) =>
+                    Developer.fromJson(developer as Map<String, dynamic>),
+              )
+              .toList() ??
+          [],
+      publishers:
+          (json['publishers'] as List<dynamic>?)
+              ?.map(
+                (publisher) =>
+                    Publisher.fromJson(publisher as Map<String, dynamic>),
+              )
+              .toList() ??
+          [],
+      genres:
+          (json['genres'] as List<dynamic>?)
+              ?.map((genre) => Genre.fromJson(genre as Map<String, dynamic>))
               .toList() ??
           [],
     );
@@ -268,6 +310,72 @@ class PlatformInfo {
       yearEnd: json['year_end'],
       yearStart: json['year_start'],
       gamesCount: json['games_count'],
+      imageBackground: json['image_background'],
+    );
+  }
+}
+
+class Developer {
+  final int? id;
+  final String? name;
+  final String? imageBackground;
+
+  const Developer({this.id, this.name, this.imageBackground});
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'image_background': imageBackground,
+  };
+
+  factory Developer.fromJson(Map<String, dynamic> json) {
+    return Developer(
+      id: json['id'],
+      name: json['name'],
+      imageBackground: json['image_background'],
+    );
+  }
+}
+
+class Genre {
+  final int? id;
+  final String? name;
+  final String? imageBackground;
+
+  const Genre({this.id, this.name, this.imageBackground});
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'image_background': imageBackground,
+  };
+
+  factory Genre.fromJson(Map<String, dynamic> json) {
+    return Genre(
+      id: json['id'],
+      name: json['name'],
+      imageBackground: json['image_background'],
+    );
+  }
+}
+
+class Publisher {
+  final int? id;
+  final String? name;
+  final String? imageBackground;
+
+  const Publisher({this.id, this.name, this.imageBackground});
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'image_background': imageBackground,
+  };
+
+  factory Publisher.fromJson(Map<String, dynamic> json) {
+    return Publisher(
+      id: json['id'],
+      name: json['name'],
       imageBackground: json['image_background'],
     );
   }
