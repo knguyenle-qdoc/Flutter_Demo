@@ -72,7 +72,7 @@ class _GamesScreenState extends ConsumerState<GamesScreen> {
               child: NavigationRail(
                 minWidth: 250,
                 backgroundColor: Colors.transparent,
-                indicatorColor: Colors.lightGreen.shade400.withValues(
+                indicatorColor: Colors.lightGreen.shade500.withValues(
                   alpha: 0.8,
                 ),
                 destinations: const [
