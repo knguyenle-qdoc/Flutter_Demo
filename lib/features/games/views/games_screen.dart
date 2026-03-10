@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/widgets/game_card.dart';
-import 'package:flutter_application_1/features/checkout/views/checkout_screen.dart';
 import 'package:flutter_application_1/features/games/viewmodels/games_viewmodel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,7 +16,6 @@ class GamesScreen extends ConsumerStatefulWidget {
 
 class _GamesScreenState extends ConsumerState<GamesScreen> {
   late TextEditingController searchController;
-  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -54,66 +52,6 @@ class _GamesScreenState extends ConsumerState<GamesScreen> {
         ),
         child: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 32),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0xFF020617),
-                    Color(0xFF0B1323),
-                    Color(0xFF0F172A),
-
-                    /// deep navy
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-              child: NavigationRail(
-                minWidth: 250,
-                backgroundColor: Colors.transparent,
-                indicatorColor: Colors.lightGreen.shade500.withValues(
-                  alpha: 0.8,
-                ),
-                destinations: const [
-                  NavigationRailDestination(
-                    icon: Icon(Icons.gamepad, color: Colors.white70),
-                    label: Text('Games', style: TextStyle(color: Colors.white)),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(
-                      Icons.shopping_cart_rounded,
-                      color: Colors.white70,
-                    ),
-                    label: Text('Cart', style: TextStyle(color: Colors.white)),
-                  ),
-                ],
-                labelType: NavigationRailLabelType.selected,
-                selectedIndex: _selectedIndex,
-                onDestinationSelected: (int index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                  if (index == 0) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const GamesScreen(),
-                      ),
-                    );
-                  }
-                  if (index == 1) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CheckoutScreen(),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ),
-
             Expanded(
               child: Column(
                 children: [

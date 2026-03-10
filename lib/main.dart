@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/features/games/views/games_screen.dart';
+import 'package:flutter_application_1/features/home/views/home_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
     // For now the app shows one screen directly.
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: GamesScreen(),
+      home: HomeScreen(),
     );
   }
 }

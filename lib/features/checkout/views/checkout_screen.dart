@@ -166,7 +166,11 @@ class CheckoutScreen extends ConsumerWidget {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.lightGreen.shade800,
                               ),
-                              onPressed: () => null,
+                              onPressed: () => Fluttertoast.showToast(
+                                msg:
+                                    'Oops, please ask Dave for the company credit card!',
+                                timeInSecForIosWeb: 3,
+                              ),
                               child: Text(
                                 'Pay Now',
                                 style: const TextStyle(color: Colors.white),
