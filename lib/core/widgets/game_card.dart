@@ -79,17 +79,6 @@ class _GameCardState extends ConsumerState<GameCard> {
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: AlignmentDirectional.bottomEnd,
-                    child: IconButton(
-                      onPressed: () {
-                        ref
-                            .read(checkoutProvider.notifier)
-                            .addItem(CheckoutItem(game: widget.game));
-                      },
-                      icon: const Icon(Icons.add_shopping_cart_rounded),
-                    ),
-                  ),
                 ],
               ),
             ),
