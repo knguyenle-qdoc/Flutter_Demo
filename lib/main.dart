@@ -26,6 +26,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // For now the app shows one screen directly.
-    return const MaterialApp(home: GamesScreen());
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: GamesScreen(),
+    );
   }
 }

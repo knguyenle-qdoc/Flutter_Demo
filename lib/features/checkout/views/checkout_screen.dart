@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/checkout/viewmodels/checkout_viewmodel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CheckoutScreen extends ConsumerWidget {
   const CheckoutScreen({super.key});
@@ -143,9 +144,19 @@ class CheckoutScreen extends ConsumerWidget {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.red.shade600,
                               ),
-                              onPressed: () => ref
-                                  .read(checkoutProvider.notifier)
-                                  .clearCheckoutItems(),
+                              onPressed: () => {
+                                ref
+                                    .read(checkoutProvider.notifier)
+                                    .clearCheckoutItems(),
+                                Fluttertoast.showToast(
+                                  msg: 'Cart cleared.',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  timeInSecForIosWeb: 3,
+                                  backgroundColor: Colors.red.shade700,
+                                  fontSize: 24,
+                                  webBgColor: '#921515',
+                                ),
+                              },
                               child: Text(
                                 'Clear Cart',
                                 style: const TextStyle(color: Colors.white),

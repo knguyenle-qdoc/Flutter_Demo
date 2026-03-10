@@ -4,6 +4,7 @@ import 'package:flutter_application_1/features/checkout/viewmodels/checkout_view
 import 'package:flutter_application_1/features/games/models/game.dart';
 import 'package:flutter_application_1/features/product/viewmodels/products_viewmodel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductScreen extends ConsumerWidget {
   final Game game;
@@ -135,9 +136,20 @@ class ProductScreen extends ConsumerWidget {
                                                   .withValues(alpha: 0.5);
                                             }),
                                       ),
-                                      onPressed: () => ref
-                                          .read(checkoutProvider.notifier)
-                                          .addItem(CheckoutItem(game: game)),
+                                      onPressed: () => {
+                                        ref
+                                            .read(checkoutProvider.notifier)
+                                            .addItem(CheckoutItem(game: game)),
+                                        Fluttertoast.showToast(
+                                          msg: '${res.name!} added to cart.',
+                                          toastLength: Toast.LENGTH_LONG,
+                                          timeInSecForIosWeb: 3,
+                                          backgroundColor:
+                                              Colors.green.shade700,
+                                          fontSize: 24,
+                                          webBgColor: '#599921',
+                                        ),
+                                      },
                                       child: Text(
                                         'Add to Cart',
                                         style: TextStyle(
